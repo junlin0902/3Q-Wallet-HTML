@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/daohanglan.css">
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/yewei.css">
+    <title id="title">3Q錢包</title>
+    <script>
+      var source = "win"
+      document.addEventListener('DOMContentLoaded', function() {
+        var queryString = window.location.search;
+        var urlParams = new URLSearchParams(queryString);
+        lan = urlParams.get('lan');
+        if (lan == "English") {toE()}
+        else if (lan == "Chinese") {toC()}
+        else if (lan == "Tchinese") {toT()}
+      });
+                  
+    </script>    
+    <style>
+      .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+      }
+      
+      .close::before,
+      .close::after {
+        position: absolute;
+        content: ' ';
+        background-color: black;
+        left: 20px;
+        width: 2px;
+        height: 20px;
+      }
+      
+      .close::before {
+        transform: rotate(45deg);
+      }
+      
+      .close::after {
+        transform: rotate(-45deg);
+      }
+
+    </style>
+
+    
+</head>
+<body style="min-width: 1700px;">
+  <!--导航栏-->
+    <div class="daohangbj">
+     <div class="daohangnr">
+        <div class="logo">
+          <a href="index.html?lan=Tchinese" id="tubiaolink"><img src="./img/logo.png"></a>
+        </div>
+            <ul>
+              <li><a href="index.html?lan=Tchinese" id="1">首頁</a></li>
+              <li><a href="zhichigonglian.html?lan=Tchinese" id="2">支持公鏈</a></li>  
+              <li><a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet?#" id="3">幫助中心</a></li>
+              <li style="float: right;">
+                <div class="yuyan" ><a href="#" class="yuyan2" id="4">語言</a>
+                  <div class="yuyanxiala" style="z-index: 5;">
+                    <a href="#"n class="Chinese">中文</button> <a href="#" class="English">English</a> <a href="#" class="Tchinese">繁體中文</a> 
+                  </div>
+                </div>
+              </li>
+            </ul>
+        </div>
+    </div>
+
+
+
+  <!--banner-->
+  
+  <div class="bannerbj" style="min-width: 1700px;">
+      <div style="position: relative;">
+        <img src="./img/liangziqianbao.png" style="float: right; width: 1000px; display: block; margin-right: 0px;">
+        <div id="tupian1" style="position: absolute; right: 560px; top:230px; font-weight: bold; font-size: 48px; min-width: 400px;">Web3量子錢包</div> 
+        <div style="position: absolute; right: 870px; top: 320px; width: 80px; height: 5px; background-color: rgb(230, 174, 53); border-radius: 10px;"></div> 
+        <div id="tupian2"style="position: absolute; right: 550px; top:370px; font-size: 28px; min-width: 400px;">為仟萬用戶保駕護航</div>
+      </div> 
+      
+      <div class="bannerzuo">
+        <h1 id="5">一鍵下載</h1>
+        <div class="xzan1">
+        <a id="link" href="https://res.3qwallet.io/3qwallet/win/Quantum-Wallet-4.1.0-win-x64.exe"style=" text-decoration: none; color: #000;"><p id="6">錢包下載</p></a>
+        </div>
+      </div>
+  </div>
+
+</body>
+</html>
+
+
+<!--下载-->
+<div class="xiazaibj">
+  <div class="xiazainr">
+    <button id="windows" class="xiazainr1" style="border: none; cursor: pointer; width: 260px;">
+      <img id="windowsxiazai" src="./img/Windowsxz.png" alt="./img/xiazai (2).png">
+    </button>
+    <button id="mac" class="xiazainr1" style="border: none; cursor: pointer; width: 260px;">
+      <img id="macxiazai" src="./img/Macmr.png" alt="">
+    </button>
+    <button id="linux" class="xiazainr1" style="border: none; cursor: pointer; width: 260px;">
+      <img id="linuxxiazai" src="./img/Linuxmr.png" alt="">
+    </button>
+    <button id="app" class="xiazainr1" style="border: none; cursor: pointer; width: 260px;">
+      <img src="./img/AppStoremr.png" alt="">
+    </button>
+    <button id="android" class="xiazainr1" style="border: none; cursor: pointer; width: 260px;">
+      <img src="./img/Androidmr.png" alt="">
+    </button>
+  </div>
+</div>
+
+
+<div class="tip-box" id="tip-box" style="position: absolute; 
+                                top: 50%; left: 50%; 
+                                width: 500px; 
+                                margin-top: -100px;
+                                position: fixed;
+                                background:rgb(152, 152, 155); 
+                                transform: translate(-50%, 50%);
+                                padding: 25px;
+                                text-align: center;
+                                font-weight: bold;
+                                border-radius: 20px;
+                                display: none;">暫未上線，請敬請期待!</div>
+                                
+</div>
+
+
+
+<script>
+  function resetXiazai() {
+    document.getElementById("windowsxiazai").src = "./img/Windowsmr.png"
+    document.getElementById("macxiazai").src = "./img/Macmr.png"
+    document.getElementById("linuxxiazai").src = "./img/Linuxmr.png"
+  }
+
+  let allButton = document.querySelector('.bannerbj')
+  fetch("https://res.3qwallet.io/3qwallet/conf/config.json")
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
+      return response.json()
+    })
+    .then(data => {
+      document.getElementById("link").href = data["desktop"]["win"]
+      let Button = document.getElementById('windows')
+      Button.addEventListener('click', () => {
+        document.getElementById("tip-box").style.display = 'none';
+        source = "win"
+        document.getElementById("link").href = data["desktop"][source]
+
+        resetXiazai()
+        document.getElementById("windowsxiazai").src = "./img/Windowsxz.png"
+      })
+    
+      Button = document.getElementById('mac')
+      Button.addEventListener('click', () => {
+        source = "macX64"
+        document.getElementById("tip-box").style.display = 'none';
+        document.getElementById("link").href = data["desktop"][source]
+
+        resetXiazai()
+        document.getElementById("macxiazai").src = "./img/Macxz.png"
+      })
+    
+      Button = document.getElementById('linux')
+      Button.addEventListener('click', () => {
+        document.getElementById("tip-box").style.display = 'none';
+        source = "linux"
+        document.getElementById("link").href = data["desktop"][source]
+
+        resetXiazai()
+        document.getElementById("linuxxiazai").src = "./img/Linuxxz.png"
+      })
+      
+      Button = document.getElementById('app')
+      Button.addEventListener('click', () => {
+        document.getElementById("tip-box").style.display = 'block';
+        // 2s time out
+        setTimeout(() => {
+          document.getElementById("tip-box").style.display = 'none';
+        }, 2000);
+      })
+    
+      Button = document.getElementById('android')
+      Button.addEventListener('click', () => {
+        document.getElementById("tip-box").style.display = 'block';
+        setTimeout(() => {
+          document.getElementById("tip-box").style.display = 'none';
+        }, 2000);
+      })
+    })
+    .catch(error => {
+    })
+</script>
+
+
+<!--文字内容-->
+<div class="wenzinrbj">
+<p style="font-size:50px; text-align:center; margin-top: 120px;font-weight: 300;margin-bottom: 100px;" id="7">為仟萬用戶進入Web3時代保駕護航</p>
+<div class="kaiyuan" id="kaiyuan" style="height: 400px;">
+  <img src="./img/kaiyuan.png" alt="" style="margin-top:65px;margin-left:185px;">
+  <p style="margin-top:55px; text-align: center;font-size: 36px;" id="8">免費且開源</p>
+  <p style="margin:0 40px ;margin-top: 40px; line-height: 30px;font-size: 17px;" id="9">其他加密錢包可能存在後門或病毒等安全隱患。而3QWallet的代碼是100%開源的，歡迎檢查，杜絕隱患。</p>
+</div>
+<div class="xinpian" id="xinpian" style="height: 400px;">
+  <img src="./img/xinpian.png" alt="" style="margin-top:58px;margin-left:185px;">
+  <p style="margin-top:55px; text-align: center;font-size: 36px;" id="10">量子安全芯片</p>
+  <p style="margin:0 40px ;margin-top: 40px; line-height: 30px;font-size: 17px;" id="11">量子隨機數由量子物理原理保障，相比偽隨機數發生器和傳統的噪聲源隨機數發生器，具有更高的安全性，併抗量子攻擊。</p>
+</div>
+<div class="yizhanshi" id="yizhanshi" style="height: 400px;">
+  <img src="./img/yizhanshi.png" alt="" style="margin-top:58px;margin-left:185px;">
+  <p style="margin-top:55px; text-align: center;font-size: 36px;" id="12">一站式生態方案</p>
+  <p style="margin:0 40px ;margin-top: 40px; line-height: 30px;font-size: 17px;" id="13">iOS、macOS、Android、Windows、Linux、Chrome、Firefox、Edge、Brave…… 3QWallet全都支持。</p>
+</div>
+<div class="bizhong">
+  <div class="bizhong1">
+    <img src="img/bizhong1.png" alt="" style="margin-top:23px;margin-left: 53px;">
+    <p style="font-size: 20px; text-align: center;margin-top: 8px;">BTC</p>
+  </div><div class="bizhong1">
+    <img src="img/bizhong (1).png" alt="" style="margin-top:23px;margin-left: 53px;">
+    <p style="font-size: 20px; text-align: center;margin-top: 8px;">ETH</p>
+  </div><div class="bizhong1">
+    <img src="img/bizhong (2).png" alt="" style="margin-top:23px;margin-left: 53px;">
+    <p style="font-size: 20px; text-align: center;margin-top: 8px;">USDT</p>
+  </div><div class="bizhong1">
+    <img src="img/bizhong (3).png" alt="" style="margin-top:23px;margin-left: 53px;">
+    <p style="font-size: 20px; text-align: center;margin-top: 8px;">USDC</p>
+  </div><div class="bizhong1">
+    <img src="img/bizhong (4).png" alt="" style="margin-top:23px;margin-left: 53px;">
+    <p style="font-size: 20px; text-align: center;margin-top: 8px;">SHIB</p>
+  </div><div class="bizhong1">
+    <img src="img/bizhong (5).png" alt="" style="margin-top:23px;margin-left: 53px;">
+    <p style="font-size: 20px; text-align: center;margin-top: 8px;">MATLC</p>
+  </div><div class="bizhong1">
+    <img src="img/bizhong (6).png" alt="" style="margin-top:23px;margin-left: 53px;">
+    <p style="font-size: 20px; text-align: center;margin-top: 8px;">TRX</p>
+  </div><div class="bizhong1">
+    <img src="img/bizhong (7).png" alt="" style="margin-top:23px;margin-left: 53px;">
+    <p style="font-size: 20px; text-align: center;margin-top: 8px;">BNB</p>
+  </div><div class="bizhong9">
+    <img src="img/bizhong (8).png" alt="" style="margin-top:23px;margin-left: 53px;">
+    <p style="font-size: 20px; text-align: center;margin-top: 8px;">OKB</p>
+  </div>
+</div>
+</div>
+<!--banner2-->
+<div class="banner2">
+  <div class="bannerwenzi">
+    <p style="font-size: 50px; color: #f4ac2e;margin-bottom: 70px;font-weight: 600; "id="14">全球首款</p>
+    <p style="font-size: 72px; color: #ffffff; "id="15">量子加密錢包</p>
+  </div>
+</div>
+<!--多链&帮助中心-->
+<div class="dlbzzx">
+  <div class="duolian">
+     <p style="margin-top: 65px;margin-left: 58px;font-size: 50px;" id="16">多鏈支持</p>
+     <div class="duolianlb" id = "duolianlb" style = "width: 120px;">
+     <a href="zhichigonglian.html" id="30" style=" text-decoration: none; color: #000;"><p id="17">多鏈列錶</p></a>
+    </div>
+  </div>
+  <div class="bangzhuzhongxin">
+    <p style="margin-top: 65px;margin-left: 58px;font-size: 50px;" id="18">幫助中心</p>
+    <div class="duolianlb" style = "width: 120px;">
+    <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/gcn10y" style=" text-decoration: none; color: #000;"><p id="19">查看</p></a>
+   </div>
+ </div>
+</div>
+<!--底部栏-->
+
+
+
+
+<div class="dibulan">
+  <div class="nr">
+    <div class="tubiao">
+      <img src="img/tuite.png" alt="">
+      <img src="img/GitHub.png" alt="">
+      <img src="img/3t.png" alt="">
+    </div>
+    <div class="fengexian">
+    </div>
+    <div class="wenzi">
+      <p style="color: #b3b3b3; margin-bottom: 20px;" id="21">產品</p>
+      <a href="https://shop.3tdao.io"><p>Quantum Wallet</p></a>
+    </div>
+    <div class="wenzi">
+      <p style="color: #b3b3b3; margin-bottom:20px;" id="22">產品</p>
+      <a href="index.html?lan=Tchinese" id="31"><p id="23">桌面端</p></a>
+      <a id="abcd" style="cursor: pointer;"><p>web</p></button>
+    </div>
+    <div class="wenzi">
+      <p style="color: #b3b3b3; margin-bottom:20px;" id="24">技術支持</p>
+      <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet?#"><p id="25">入門指南</p></a>
+      <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet?#"><p id="26">錢包手冊</p></a>
+    </div>
+    <div class="wenzi">
+      <p style="color: #b3b3b3; margin-bottom:20px;" id="27">資源</p>
+      <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet/tty3qzry7ypxqqal?singleDoc#"><p id="28">隐私协议</p></a>
+      <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet/mp7t3y8g0pacvm29?singleDoc#"><p id="29">用户协议</p></a>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  let webLink = document.querySelector('#abcd');
+  webLink.addEventListener('click', (event) => {
+    document.getElementById("tip-box").style.display = 'block';
+    setTimeout(() => {
+      document.getElementById("tip-box").style.display = 'none';
+    }, 2000);
+  });
+
+
+
+
+  // change language
+  function toE() {
+    document.getElementById("title").textContent = "3Q Wallet"
+    document.getElementById("1").textContent = "Home"
+    document.getElementById("2").textContent = "Support For Public Chains"
+    document.getElementById("2").href = "zhichigonglian.html?lan=English"
+    document.getElementById("30").href = "zhichigonglian.html?lan=English"
+    document.getElementById("1").href = "index.html?lan=English"
+    document.getElementById("3").textContent = "Help Centre"
+    document.getElementById("4").textContent = "Language"
+    document.getElementById("5").textContent = "Download"
+    document.getElementById("6").textContent = "Wallet Download"
+    document.getElementById("7").textContent = "Protecting millions of users into the Web3 era"
+    document.getElementById("8").textContent = "Free and open source"
+    document.getElementById("9").textContent = "Other crypto wallets may have security risks such as backdoors or viruses. The code of 3QWallet, on the other hand, is 100% open source and you are welcome to check it to eliminate hidden risks."
+    document.getElementById("kaiyuan").style.height = "500px";
+
+    document.getElementById("10").textContent = "Quantum security chips"
+    document.getElementById("11").textContent = "Quantum random numbers are guaranteed by the principles of quantum physics and are more secure and resistant to quantum attacks than pseudo-random number generators and traditional noise-sourced random number generators."
+    document.getElementById("xinpian").style.height = "500px";
+    
+    document.getElementById("12").textContent = "One-stop ecological solutions"
+    document.getElementById("13").textContent = "iOS, macOS, Android, Windows, Linux, Chrome, Firefox, Edge, Brave ...... 3QWallet all supported."
+    document.getElementById("yizhanshi").style.height = "500px";
+    document.getElementById("duolianlb").style.width = "180px";
+
+    document.getElementById("14").textContent = "The world's first"
+    document.getElementById("15").textContent = "Quantum Crypto Wallet"
+    document.getElementById("16").textContent = "Multi-chain support"
+    document.getElementById("17").textContent = "Multi-Chain List"
+    document.getElementById("18").textContent = "Help Centre"
+    document.getElementById("19").textContent = "View"
+    document.getElementById("tip-box").textContent = "Not yet available, stay tuned!"
+    document.getElementById("tupian1").textContent = "Web3 Quantum Wallet"
+    document.getElementById("tupian1").style.fontSize = "40px"
+    document.getElementById("tupian1").style.right = "530px"
+    document.getElementById("tupian1").style.top = "230px"
+    document.getElementById("tupian2").textContent = "Protecting Thousands of Users"
+    document.getElementById("tupian2").style.fontSize = "22px"
+
+    document.getElementById("21").textContent = "Products"
+    document.getElementById("22").textContent = "Products"
+    document.getElementById("23").textContent = "Desktop"
+    document.getElementById("24").textContent = "Technical Support"
+    document.getElementById("25").textContent = "Getting Started Guide"
+    document.getElementById("26").textContent = "Wallets brochure"
+    document.getElementById("27").textContent = "Resources"
+    document.getElementById("28").textContent = "Privacy Agreement"
+    document.getElementById("29").textContent = "User Agreement"
+    document.getElementById("31").href = "index.html?lan=English"
+    document.getElementById("tubiaolink").href = "index.html?lan=English"
+
+   //let allButton = document.querySelector('.nr')
+   //allButton.innerHTML=""    
+   //let newIcon = document.createElement('div')   
+   //newIcon.innerHTML=`
+   //<div class="tubiao">
+   //  <img src="img/tuite.png" alt="">
+   //  <img src="img/GitHub.png" alt="">
+   //  <img src="img/3t.png" alt="">
+   //</div>
+   //<div class="fengexian">
+   //</div>
+   //<div class="wenzi">
+   //  <p style="color: #b3b3b3; margin-bottom: 20px;" id="21">Products</p>
+   //  <a href="https://shop.3tdao.io"><p>Quantum Wallet</p></a>
+   //</div>
+   //<div class="wenzi">
+   //  <p style="color: #b3b3b3; margin-bottom:20px;" id="22">Products</p>
+   //  <a href="index.html?lan=English"><p id="23">Desktop</p></a>
+   //  <a id="abcd" style="cursor: pointer;"><p style="color: white;">web</p></a>
+   //</div>
+   //<div class="wenzi">
+   //  <p style="color: #b3b3b3; margin-bottom:20px;" id="24">Technical Support</p>
+   //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet?#"><p id="25">Getting Started Guide</p></a>
+   //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet?#"><p id="26">Wallets brochure</p></a>
+   //</div>
+   //<div class="wenzi">
+   //  <p style="color: #b3b3b3; margin-bottom:20px;" id="27">Resources</p>
+   //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet/tty3qzry7ypxqqal?singleDoc#" id="28"><p>Privacy Agreement</p></a>
+   //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet/mp7t3y8g0pacvm29?singleDoc#" id="29"><p>User Agreement</p></a>
+   //</div>
+   //`
+   //allButton.appendChild(newIcon)
+  }
+  const toEnglish = document.querySelector('.English')
+  toEnglish.addEventListener('click', (event) => {
+    toE()
+    window.location.href = "index.html?lan=English"
+    //webLink = document.querySelector('.abcd');
+    //webLink.addEventListener('click', (event) => {
+    //  document.getElementById("tip-box").style.display = 'block';
+    //  setTimeout(() => {
+    //    document.getElementById("tip-box").style.display = 'none';
+    //  }, 2000);
+    //});
+  })
+  
+
+  function toC() {
+    document.getElementById("title").textContent = "3Q钱包"
+    document.getElementById("1").textContent = "首页"
+    document.getElementById("2").textContent = "支持公链"
+    document.getElementById("2").href = "zhichigonglian.html?lan=Chinese"
+    document.getElementById("30").href = "zhichigonglian.html?lan=Chinese"
+    document.getElementById("1").href = "index.html?lan=Chinese"
+    document.getElementById("3").textContent = "帮助中心"
+    document.getElementById("4").textContent = "语言"
+    document.getElementById("5").textContent = "一键下载"
+    document.getElementById("6").textContent = "钱包下载"
+    document.getElementById("7").textContent = "为千万用户进入Web3时代保驾护航"
+    document.getElementById("8").textContent = "免费且开源"
+
+    document.getElementById("9").textContent = "其他加密钱包可能存在后门或病毒等安全隐患。而3QWallet的代码是100%开源的，欢迎检查，杜绝隐患。"
+    document.getElementById("10").textContent = "量子安全芯片"
+
+    document.getElementById("11").textContent = "量子随机数由量子物理原理保障，相比伪随机数发生器和传统的噪声源随机数发生器，具有更高的安全性，并抗量子攻击。"
+    
+    
+    document.getElementById("12").textContent = "一站式生态方案"
+    document.getElementById("13").textContent = "iOS、macOS、Android、Windows、Linux、Chrome、Firefox、Edge、Brave…… 3QWallet全都支持。"
+    document.getElementById("14").textContent = "全球首款"
+    document.getElementById("15").textContent = "量子加密钱包"
+    document.getElementById("16").textContent = "多链支持"
+    document.getElementById("17").textContent = "多链列表"
+    document.getElementById("18").textContent = "帮助中心"
+    document.getElementById("19").textContent = "查看"
+    document.getElementById("tip-box").textContent = "暂未上线，请敬请期待!"
+    document.getElementById("tupian1").textContent = "Web3量子钱包"
+    document.getElementById("tupian2").textContent = "为千万用户保驾护航"
+    document.getElementById("tupian1").style.fontSize = "48px"
+    document.getElementById("tupian2").style.fontSize = "28px"
+    document.getElementById("tupian1").style.right = "560px"
+    document.getElementById("tupian1").style.top = "230px"
+
+
+    document.getElementById("kaiyuan").style.height = "400px";
+    document.getElementById("xinpian").style.height = "400px";
+    document.getElementById("yizhanshi").style.height = "400px";
+    document.getElementById("duolianlb").style.width = "120px";
+
+    document.getElementById("21").textContent = "产品"
+    document.getElementById("22").textContent = "产品"
+    document.getElementById("23").textContent = "桌面端"
+    document.getElementById("24").textContent = "技术支持"
+    document.getElementById("25").textContent = "入门指南"
+    document.getElementById("26").textContent = "钱包手册"
+    document.getElementById("27").textContent = "资源"
+    document.getElementById("28").textContent = "隐私协议"
+    document.getElementById("29").textContent = "用户协议"
+    document.getElementById("31").href = "index.html?lan=Chinese"
+    document.getElementById("tubiaolink").href = "index.html?lan=Chinese"
+
+    //let allButton = document.querySelector('.nr')
+    //allButton.innerHTML=""    
+    //let newIcon = document.createElement('div')   
+    //newIcon.innerHTML=`
+    //<div class="tubiao">
+    //  <img src="img/tuite.png" alt="">
+    //  <img src="img/GitHub.png" alt="">
+    //  <img src="img/3t.png" alt="">
+    //</div>
+    //<div class="fengexian">
+    //</div>
+    //<div class="wenzi">
+    //  <p style="color: #b3b3b3; margin-bottom: 20px;" id="21">产品</p>
+    //  <a href="https://shop.3tdao.io"><p>Quantum Wallet</p></a>
+    //</div>
+    //<div class="wenzi">
+    //  <p style="color: #b3b3b3; margin-bottom:20px;" id="22">产品</p>
+    //  <a href="index.html?lan=Chinese"><p id="23">桌面端</p></a>
+    //  <a id="abcd" style="cursor: pointer;"><p style="color: white;">web</p></a>
+    //</div>
+    //<div class="wenzi">
+    //  <p style="color: #b3b3b3; margin-bottom:20px;" id="24">技术支持</p>
+    //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet?#"><p id="25">入门指南</p></a>
+    //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet?#"><p id="26">钱包手册</p></a>
+    //</div>
+    //<div class="wenzi">
+    //  <p style="color: #b3b3b3; margin-bottom:20px;" id="27">Resources</p>
+    //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet/tty3qzry7ypxqqal?singleDoc#" id="28"><p>隐私协议</p></a>
+    //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet/mp7t3y8g0pacvm29?singleDoc#" id="29"><p>用户协议</p></a>
+    //</div>
+    //`
+    //allButton.appendChild(newIcon)
+  }
+  const toChinese = document.querySelector('.Chinese')
+  toChinese.addEventListener('click', (event) => {
+    toC()
+    window.location.href = "index.html?lan=Chinese"
+    //webLink = document.querySelector('.abcd');
+    //webLink.addEventListener('click', (event) => {
+    //  document.getElementById("tip-box").style.display = 'block';
+    //  setTimeout(() => {
+    //    document.getElementById("tip-box").style.display = 'none';
+    //  }, 2000);
+    //});
+  })
+
+
+  function toT() {
+    document.getElementById("title").textContent = "3Q錢包"
+    document.getElementById("1").textContent = "首頁"
+    document.getElementById("2").textContent = "支持公鏈"
+    document.getElementById("2").href = "zhichigonglian.html?lan=Tchinese"
+    document.getElementById("30").href = "zhichigonglian.html?lan=Tchinese"
+    document.getElementById("1").href = "index.html?lan=Tchinese"
+    document.getElementById("3").textContent = "幫助中心"
+    document.getElementById("4").textContent = "語言"
+    document.getElementById("5").textContent = "一鍵下載"
+    document.getElementById("6").textContent = "錢包下載"
+    document.getElementById("7").textContent = "為仟萬用戶進入Web3時代保駕護航"
+    document.getElementById("8").textContent = "免費且開源"
+
+    document.getElementById("9").textContent = "其他加密錢包可能存在後門或病毒等安全隱患。而3QWallet的代碼是100%開源的，歡迎檢查，杜絕隱患。"
+    document.getElementById("10").textContent = "量子安全芯片"
+
+    document.getElementById("11").textContent = "量子隨機數由量子物理原理保障，相比偽隨機數發生器和傳統的噪聲源隨機數發生器，具有更高的安全性，併抗量子攻擊。"
+    
+    
+    document.getElementById("12").textContent = "一站式生態方案"
+    document.getElementById("13").textContent = "iOS、macOS、Android、Windows、Linux、Chrome、Firefox、Edge、Brave…… 3QWallet全都支持。"
+    document.getElementById("14").textContent = "全球首款"
+    document.getElementById("15").textContent = "量子加密錢包"
+    document.getElementById("16").textContent = "多鏈支持"
+    document.getElementById("17").textContent = "多鏈列錶"
+    document.getElementById("18").textContent = "幫助中心"
+    document.getElementById("19").textContent = "查看"
+    document.getElementById("tip-box").textContent = "暫未上線，請敬請期待!"
+    document.getElementById("tupian1").textContent = "Web3量子錢包"
+    document.getElementById("tupian2").textContent = "為仟萬用戶保駕護航"
+
+    document.getElementById("kaiyuan").style.height = "400px";
+    document.getElementById("xinpian").style.height = "400px";
+    document.getElementById("yizhanshi").style.height = "400px";
+    document.getElementById("duolianlb").style.width = "120px";
+    document.getElementById("tupian1").style.fontSize = "48px"
+    document.getElementById("tupian2").style.fontSize = "28px"
+    document.getElementById("tupian1").style.right = "560px"
+    document.getElementById("tupian1").style.top = "230px"
+
+    document.getElementById("21").textContent = "產品"
+    document.getElementById("22").textContent = "產品"
+    document.getElementById("23").textContent = "桌面端"
+    document.getElementById("24").textContent = "技術支持"
+    document.getElementById("25").textContent = "入門指南"
+    document.getElementById("26").textContent = "錢包手冊"
+    document.getElementById("27").textContent = "資源"
+    document.getElementById("28").textContent = "隱私協議"
+    document.getElementById("29").textContent = "用戶協議"
+    document.getElementById("31").href = "index.html?lan=Tchinese"
+    document.getElementById("tubiaolink").href = "index.html?lan=Tchinese"
+
+    //let allButton = document.querySelector('.nr')
+    //allButton.innerHTML=""    
+    //let newIcon = document.createElement('div')   
+    //newIcon.innerHTML=`
+    //<div class="tubiao">
+    //  <img src="img/tuite.png" alt="">
+    //  <img src="img/GitHub.png" alt="">
+    //  <img src="img/3t.png" alt="">
+    //</div>
+    //<div class="fengexian">
+    //</div>
+    //<div class="wenzi">
+    //  <p style="color: #b3b3b3; margin-bottom: 20px;" id="21">產品</p>
+    //  <a href="https://shop.3tdao.io"><p>Quantum Wallet</p></a>
+    //</div>
+    //<div class="wenzi">
+    //  <p style="color: #b3b3b3; margin-bottom:20px;" id="22">產品</p>
+    //  <a href="index.html?lan=Tchinese"><p id="23">桌面端</p></a>
+    //  <a id="abcd" style="cursor: pointer;"><p style="color: white;">web</p></a>
+    //</div>
+    //<div class="wenzi">
+    //  <p style="color: #b3b3b3; margin-bottom:20px;" id="24">技術支持</p>
+    //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet?#"><p id="25">入門指南</p></a>
+    //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet?#"><p id="26">錢包手冊 brochure</p></a>
+    //</div>
+    //<div class="wenzi">
+    //  <p style="color: #b3b3b3; margin-bottom:20px;" id="27">資源</p>
+    //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet/tty3qzry7ypxqqal?singleDoc#" id="28"><p>隱私協議</p></a>
+    //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet/mp7t3y8g0pacvm29?singleDoc#" id="29"><p>用戶協議</p></a>
+    //</div>
+    //`
+    //allButton.appendChild(newIcon)    
+  }
+  const toTchinese = document.querySelector('.Tchinese')
+  toTchinese.addEventListener('click', (event) => {
+    toT()
+    window.location.href = "index.html?lan=Tchinese"
+    //webLink = document.querySelector('.abcd');
+    //webLink.addEventListener('click', (event) => {
+    //  document.getElementById("tip-box").style.display = 'block';
+    //  setTimeout(() => {
+    //    document.getElementById("tip-box").style.display = 'none';
+    //  }, 2000);
+    //});
+  })
+
+  //console.log(window.location.href)
+</script>

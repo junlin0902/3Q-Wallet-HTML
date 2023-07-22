@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/daohanglan.css">
+    <link rel="stylesheet" href="css/yewei.css">
+    <link rel="stylesheet" href="css/bizhong.css">
+    <title id="1">支持公鏈</title>
+    <script>
+      var counter = 0
+      var chainid = "1"
+      var chainArr = []
+      document.addEventListener('DOMContentLoaded', function() {
+        var queryString = window.location.search;
+        var urlParams = new URLSearchParams(queryString);
+        lan = urlParams.get('lan');
+        if (lan == "English") {
+          toE()
+        }
+        else if (lan == "Chinese") {toC()}
+        else if (lan == "Tchinese") {toT()}
+      });
+      //let localURL = window.location.href
+      //if (localURL.slice(localURL.length, localURL.length)) {}     
+    </script>
+    <style>
+      .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+      }
+    
+      .close::before,
+      .close::after {
+        position: absolute;
+        content: ' ';
+        background-color: black;
+        left: 20px;
+        width: 2px;
+        height: 20px;
+      }
+      
+      .close::before {
+        transform: rotate(45deg);
+      }
+      
+      .close::after {
+        transform: rotate(-45deg);
+      }
+    </style>
+    <style>
+      #ul {
+        list-style-type: none;
+        width: 750px;
+        padding: 0;
+        margin: 0 auto; /* Add this line to center the search results list */
+        max-height: 200px; /* Adjust the maximum height as desired */
+        overflow-y: auto;
+        margin-right: 250px;
+        border-radius: 10px;
+        font-weight: bold;
+        border: 1px solid black;
+      }
+    
+      #ul li {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-top: none;
+        background-color: #f9f9f9;
+        cursor: pointer;
+      }
+    
+      #ul li:first-child {
+        border-top: 1px solid #ccc;
+      }
+    
+      #ul li:hover {
+        background-color: #e6e6e6;
+      }
+    </style>
+</head>
+<body style="min-width: 1700px;">
+<!--导航栏-->
+    <div class="daohangbj">
+        <div class="daohangnr">
+           <div class="logo">
+             <a href="index.html?lan=Tchinese" id="tubiaolink"><img src="./img/logo.png"></a>
+           </div>
+               <ul>
+                 <li><a href="index.html?lan=Tchinese" id="2">主頁</a></li>
+                 <li><a href="zhichigonglian.html?lan=Tchinese" id="3">支持公鏈</a></li>  
+                 <li><a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet?#" id="4">幫助中心</a></li>
+                 <li style="float: right;">
+                   <div class="yuyan" ><a href="#" class="yuyan2" id="5">語言</a>
+                     <div class="yuyanxiala">
+                      <a href="#"n class="Chinese">中文</button> <a href="#" class="English">English</a> <a href="#" class="Tchinese">繁體中文</a> 
+                     </div>
+                   </div>
+                 </li>
+               </ul>
+           </div>
+    </div>
+<!--币种-->
+    <div class="bizhong">
+
+    </div>
+
+    <script>
+      let btype = document.querySelector('.bizhong')
+      fetch("https://res.3qwallet.io/3qwallet/chains/chains.json")
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          for (let i = 0; i < 15; i++) {
+            chainArr.push(data[i]["chainId"])
+          }
+          for(let i = 0; i < 15; i++) {    
+            let newIcon = document.createElement('div')         
+            newIcon.innerHTML=`
+            <button class="bizhong1" id="bizhong${i}" style="margin-bottom: 15px; cursor: pointer; border: none;">
+              <img src=${data[i]["icon"]} alt="" style="height: 40px; width: 40x; border-radius: 50%; object-fit: cover;">
+              <p style="font-size: 20px; text-align: center;margin-top: 8px;">${data[i]["name"]}</p>
+            </button>
+            `
+            btype.appendChild(newIcon)
+          }
+          document.getElementById("bizhong0").style.backgroundColor = "#727272"
+          let allListener = document.querySelectorAll('.bizhong1')
+          let last = 0
+          for (let i = 0; i < 15; i++) {
+            allListener[i].addEventListener('click', () => {
+               document.getElementById("bizhong" + last).style.backgroundColor = "#f2f2f2"
+               //document.getElementById("bizhong" + last).onmouseover = function() {
+               //  this.style.backgroundColor = "#e5e5e5"
+               //}
+               last = i;
+               document.getElementById("bizhong" + i).style.backgroundColor = "#727272"
+               chainid = chainArr[i]
+               document.getElementById("ul").innerHTML = ""
+               startSearch();
+               counter = 0
+               document.getElementById("more").style.display = "block";
+               fetch("https://res.3qwallet.io/3qwallet/chains/tokens/" + chainid + ".json")
+                 .then(response => {
+                   if (!response.ok) {
+                     throw new Error('Network response was not ok');
+                   }
+                   return response.json();
+                 })
+                 .then(data => {
+                   allButton.innerHTML = ""
+                   for (let i = 0; i < 24; i++) {    
+                     let newIcon = document.createElement('div')         
+                     newIcon.innerHTML=`
+                     <div class="nrleibiao1" style="margin-right: 20px;width: 330px;margin-bottom: 15px;height:108px;">
+                       <div class="touxiang">
+                          <img src=${data[counter]["logoURI"]} alt="" style="width: 58px;height: 58px; border-radius: 50%; object-fit: cover;">
+                       </div>
+                       <div class="wenzi">
+                          <h2 style="margin-left: 100px; font-size:16px; margin-bottom: 10px;font-weight: 400; font-weight: bold;">${data[counter]["symbol"]}</h2>
+                          <P style="margin-left: 100px; font-size: 14px;color: #808080;">${data[counter]["name"]}</P>
+                       </div>
+                     </div>
+                     `
+                     allButton.appendChild(newIcon)
+                     counter++
+                     if (counter >= data.length) {
+                       document.getElementById("more").style.display = "none";
+                     }
+                   }
+                 })
+                 .catch(error => {
+                   let newIcon = document.createElement('div')         
+                   newIcon.innerHTML=`
+                   <div class="nrleibiao1" style="background-color: white;margin-right: 20px;width: 330px;margin-bottom: 15px; height:108px;">
+                   </div>
+                   `
+                   allButton.appendChild(newIcon)
+                 });                   
+            })
+          }
+
+        })
+        .catch(error => {
+          let newIcon = document.createElement('div')         
+          newIcon.innerHTML=`
+          <div class="bizhong" style="background-color: white">
+          </div>
+          `
+        });
+
+    </script>
+
+
+
+
+<!--搜索-->
+<div class="sousuok" style="position: relative; margin-top: 400px;">
+  <input type="text" class="sousuo" placeholder="請輸入妳想要的令牌" id="7">
+  <span id="searchx" class="close" style="top: 105px; left: 1025px;"></span>
+  <ul id="ul" style="margin-right: 300px; border: none;"></ul>
+</div>
+
+
+<script>
+  let close_btn = document.querySelector('.close');
+  close_btn.addEventListener('click', () => {
+    document.getElementById('more').style.display = 'block'
+    document.querySelector('.sousuo').value = ''
+    document.querySelector('#ul').innerHTML = ''
+    document.querySelector(".nrleibiao").innerHTML = ""
+    counter = 0
+    firstprint()
+  });
+
+  function startSearch() {
+    let search_input = document.querySelector('.sousuo');
+    let search_ul = document.querySelector('#ul');
+  
+  
+    fetch("https://res.3qwallet.io/3qwallet/chains/tokens/" + chainid + ".json")
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          search_input.addEventListener('input', (event) => {
+            let val = event.target.value.toLowerCase();
+            let results = data.filter(datas => {
+            let s = datas["symbol"].toLowerCase();
+            return s.includes(val);
+            });
+            showResults(results);
+          });
+  
+  
+          let showResults = (results) => {
+            if (results.length == 0) {
+              search_ul.innerHTML = "No results found"          
+              return;
+            }
+
+            let html = results.map(datas => `<li>${datas["symbol"]}</li>`).join("");
+            search_ul.innerHTML = html;
+            let lii = document.querySelectorAll('li');
+            lii.forEach(item => {
+              item.addEventListener('click', () => {                
+                search_input.value = item.innerText;
+                search_ul.innerHTML = '';
+                document.querySelector(".nrleibiao").innerHTML = ""
+                let x = 0
+                for (let i = 0; i < data.length; i++) {
+                  if (data[i]["symbol"] == search_input.value) {
+                    x = i;
+                    break;
+                  }
+                }
+                let t = data[x]["symbol"]
+                let blockHeight = 108;
+                if (t.slice(0, 9) == "REALTOKEN") {
+                  blockHeight = 138;
+                }  
+                let newIcon = document.createElement('div')         
+                newIcon.innerHTML=`
+                <div class="nrleibiao1" style="margin-right: 20px;width: 330px;margin-bottom: 15px; height: ${blockHeight}px">
+                  <div class="touxiang">
+                     <img src=${data[x]["logoURI"]} alt="" style="width: 58px;height: 58px; border-radius: 50%; object-fit: cover;">
+                  </div>
+                  <div class="wenzi">
+                     <h2 style="margin-left: 100px; font-size:16px; margin-bottom: 10px;font-weight: 400; font-weight: bold;">${t}</h2>
+                     <P style="margin-left: 100px; font-size: 14px;color: #808080;">${data[x]["name"]}</P>
+                  </div>
+                </div>
+                `
+                allButton.appendChild(newIcon)
+                document.getElementById("more").style.display = "none"              
+               });
+            });
+          };
+      
+          function castAbout() {
+            let value = search_input.value;
+            let ids = data.find(datas => value === datas["name"]);
+            if (ids == undefined) {
+              alert("No such results");
+            } else {
+              localStorage.setItem('id', ids.id);
+            }
+          }        
+        });
+  }
+  startSearch();
+</script>
+
+
+<!--内容-->
+    <div class="gongliannr">
+        <p style="font-size: 50px; text-align: center;margin-bottom: 80px;" id="8">代幣列錶</p>
+    </div>
+
+    <script>
+    function firstprint() {
+      fetch("https://res.3qwallet.io/3qwallet/chains/tokens/" + chainid + ".json")
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          for(let i = 0; i < 24; i++) {    
+            let newIcon = document.createElement('div')         
+            newIcon.innerHTML=`
+            <div class="nrleibiao1" style="margin-right: 20px;width: 330px;margin-bottom: 15px;height:108px;">
+              <div class="touxiang">
+                 <img src=${data[counter]["logoURI"]} alt="" style="width: 58px;height: 58px; border-radius: 50%; object-fit: cover;">
+              </div>
+              <div class="wenzi">
+                 <h2 style="margin-left: 100px; font-size:16px; margin-bottom: 10px;font-weight: 400; font-weight: bold;">${data[counter]["symbol"]}</h2>
+                 <P style="margin-left: 100px; font-size: 14px;color: #808080;">${data[counter]["name"]}</P>
+              </div>
+            </div>
+            `
+            allButton.appendChild(newIcon)
+            counter++
+            if (counter >= data.length) {
+              document.getElementById("more").style.display = "none";
+            }
+          }
+        })
+        .catch(error => {
+          let newIcon = document.createElement('div')         
+          newIcon.innerHTML=`
+          <div class="nrleibiao1" style="background-color: white;margin-right: 20px;width: 330px;margin-bottom: 15px; height:108px;">
+          </div>
+          `
+          allButton.appendChild(newIcon)
+        });          
+    }
+    firstprint()
+
+    </script>
+
+    <div class="nrleibiao"></div>
+
+
+
+    <div class="gongliannr" style="width: 1400px; display: block">
+      <button id="more" style="padding: 10px 680px;
+        color: black;
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+        font-size: 25px;
+        cursor: pointer;
+        border-radius: 4px;"><img src="img/gengduo.png" alt="">
+      </button>
+    </div>
+
+    <script>
+      let allButton = document.querySelector('.nrleibiao')
+      let button= document.querySelector('#more')
+      button.addEventListener('click', () => {
+        fetch("https://res.3qwallet.io/3qwallet/chains/tokens/" + chainid + ".json")
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          for (i = 0; i < 6; i++) {
+            //let ifreal = false;
+            let mb = 15;
+            let blockHeight = 108;
+            console.log(counter)
+
+            let temp = counter
+            for(let j = 0; j < 4; j++) {
+              let sym = data[temp]["symbol"]
+              if (sym.slice(0, 9) == "REALTOKEN") {
+                blockHeight = 138;
+                //ifreal = true;
+              }
+              temp++
+              if (temp >= data.length) {
+                break
+              }
+            }  
+
+            for(let j = 0; j < 4; j++) {    
+              let newIcon = document.createElement('div')
+              let sym = data[counter]["symbol"]
+              //mb = 15;
+              //if (sym.slice(0, 9) == "REALTOKEN") {
+              //  blockHeight = 138;
+              //  //ifreal = true;
+              //}
+              //if (sym.slice(0, 9) != "REALTOKEN" && ifreal == true) {
+              //  mb = 45;
+              //}         
+              newIcon.innerHTML=`
+              <div class="nrleibiao1" style="margin-right: 20px;width: 330px;margin-bottom: 15px; height:${blockHeight}px;">
+                <div class="touxiang">
+                   <img src=${data[counter]["logoURI"]} alt="" style="width: 58px;height: 58px; border-radius: 50%; object-fit: cover;">
+                </div>
+                <div class="wenzi">
+                   <h2 style="margin-left: 100px; font-size:16px; margin-bottom: 10px;font-weight: 400; font-weight: bold;">${sym}</h2>
+                   <P style="margin-left: 100px; font-size: 14px;color: #808080;">${data[counter]["name"]}</P>
+                </div>
+              </div>
+              `
+              counter++
+              if (counter >= data.length) {
+                document.getElementById("more").style.display = "none";
+              }
+              allButton.appendChild(newIcon)
+            }
+            ifreal = false;
+          }
+        })
+        .catch(error => {
+          let newIcon = document.createElement('div')         
+          newIcon.innerHTML=`
+          <div class="nrleibiao1" style="background-color: white;margin-right: 20px;width: 330px;margin-bottom: 15px; height:108px;">
+          </div>
+          `
+          allButton.appendChild(newIcon)
+        });            
+      })
+    </script>
+
+
+<!--底部栏-->
+  <div class="tip-box" id="tip-box" style="position: absolute; 
+                                  top: 50%; left: 50%; 
+                                  width: 500px; 
+                                  margin-top: -100px;
+                                  position: fixed;
+                                  background:rgb(152, 152, 155); 
+                                  transform: translate(-50%, 50%);
+                                  padding: 25px;
+                                  text-align: center;
+                                  font-weight: bold;
+                                  border-radius: 20px;
+                                  display: none;">暫未上線，請敬請期待!</div>                                
+  </div>
+
+
+    <div class="dibulan">
+      <div class="nr">
+      <div class="tubiao">
+        <img src="img/tuite.png" alt="">
+        <img src="img/GitHub.png" alt="">
+        <img src="img/3t.png" alt="">
+      </div>
+      <div class="fengexian">
+      </div>
+      <div class="wenzi">
+        <p style="color: #b3b3b3; margin-bottom: 20px;" id="10">產品</p>
+        <a href="https://shop.3tdao.io"><p>Quantum Wallet</p></a>
+      </div>
+      <div class="wenzi">
+        <p style="color: #b3b3b3; margin-bottom:20px;" id="11">產品</p>
+        <a href="index.html?lan=Tchinese" id="20" ><p id="12">桌面端</p></a>
+        <a id="abcd" style="cursor: pointer;"><p >web</p></a>
+      </div>
+      <div class="wenzi">
+        <p style="color: #b3b3b3; margin-bottom:20px;" id="13">技術支持</p>
+        <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet?#"><p id="14">入門指南</p></a>
+        <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet?#"><p id="15">錢包手冊</p></a>
+      </div>
+      <div class="wenzi">
+        <p style="color: #b3b3b3; margin-bottom:20px;" id="16">資源</p>
+        <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet/tty3qzry7ypxqqal?singleDoc#"><p id="17">隱私協議</p></a>
+        <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet/mp7t3y8g0pacvm29?singleDoc#"><p id="18">用戶協議</p></a>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let webLink = document.querySelector('#abcd');
+    webLink.addEventListener('click', (event) => {
+      document.getElementById("tip-box").style.display = 'block';
+      setTimeout(() => {
+        document.getElementById("tip-box").style.display = 'none';
+      }, 2000);
+    });
+
+    const toEnglish = document.querySelector('.English')
+    function toE() {
+      document.getElementById("1").textContent = "Support for public chains"
+      document.getElementById("2").textContent = "Home"
+      document.getElementById("3").textContent = "Support for public chains"
+      document.getElementById("4").textContent = "Help Centre"
+      document.getElementById("5").textContent = "Language"
+      document.getElementById("7").placeholder = "Please enter the token you want"
+      document.getElementById("8").textContent = "Token List"
+      document.getElementById("2").href = "index.html?lan=English"
+      document.getElementById("3").href = "zhichigonglian.html?lan=English"
+      document.getElementById("tip-box").textContent = "Not yet available, stay tuned!"
+
+      document.getElementById("10").textContent = "Products"
+      document.getElementById("11").textContent = "Products"
+      document.getElementById("12").textContent = "Desktop"
+      document.getElementById("13").textContent = "Technical Support"
+      document.getElementById("14").textContent = "Getting Started Guide"
+      document.getElementById("15").textContent = "Wallets brochure"
+      document.getElementById("16").textContent = "Resources"
+      document.getElementById("17").textContent = "Privacy Agreement"
+      document.getElementById("18").textContent = "User Agreement"
+      document.getElementById("20").href = "index.html?lan=English"
+      document.getElementById("tubiaolink").href = "index.html?lan=English"
+
+      //let allButton = document.querySelector('.nr')
+      //allButton.innerHTML=""    
+      //let newIcon = document.createElement('div')   
+      //newIcon.innerHTML=`
+      //<div class="tubiao">
+      //  <img src="img/tuite.png" alt="">
+      //  <img src="img/GitHub.png" alt="">
+      //  <img src="img/3t.png" alt="">
+      //</div>
+      //<div class="fengexian">
+      //</div>
+      //<div class="wenzi">
+      //  <p style="color: #b3b3b3; margin-bottom: 20px;" id="21">Products</p>
+      //  <a href="https://shop.3tdao.io"><p>Quantum Wallet</p></a>
+      //</div>
+      //<div class="wenzi">
+      //  <p style="color: #b3b3b3; margin-bottom:20px;" id="22">Products</p>
+      //  <a href="index.html?lan=English"><p id="23">Desktop</p></a>
+      //  <a id="abcd" style="cursor: pointer;"><p style="color: white;">web</p></a>
+      //</div>
+      //<div class="wenzi">
+      //  <p style="color: #b3b3b3; margin-bottom:20px;" id="24">Technical Support</p>
+      //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet?#"><p id="25">Getting Started Guide</p></a>
+      //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet?#"><p id="26">Wallets brochure</p></a>
+      //</div>
+      //<div class="wenzi">
+      //  <p style="color: #b3b3b3; margin-bottom:20px;" id="27">Resources</p>
+      //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet/tty3qzry7ypxqqal?singleDoc#" id="28"><p>Privacy Agreement</p></a>
+      //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet/mp7t3y8g0pacvm29?singleDoc#" id="29"><p>User Agreement</p></a>
+      //</div>
+      //`
+      //allButton.appendChild(newIcon)      
+    }
+    toEnglish.addEventListener('click', (event) => {
+      toE()
+      window.location.href = "zhichigonglian.html?lan=English"
+      //webLink = document.querySelector('#abcd');
+      //webLink.addEventListener('click', (event) => {
+      //  document.getElementById("tip-box").style.display = 'block';
+      //  setTimeout(() => {
+      //    document.getElementById("tip-box").style.display = 'none';
+      //  }, 2000);
+      //});      
+    })
+
+    function toC() {
+      document.getElementById("1").textContent = "支持公链"
+      document.getElementById("2").textContent = "主页"
+      document.getElementById("3").textContent = "支持公链"
+      document.getElementById("4").textContent = "帮助中心"
+      document.getElementById("5").textContent = "语言"
+      document.getElementById("7").placeholder = "请输入你想要的令牌"
+      document.getElementById("8").textContent = "代币列表"
+      document.getElementById("2").href = "index.html?lan=Chinese"
+      document.getElementById("3").href = "zhichigonglian.html?lan=Chinese"
+      document.getElementById("tip-box").textContent = "暂未上线，请敬请期待!"
+
+      document.getElementById("10").textContent = "产品"
+      document.getElementById("11").textContent = "产品"
+      document.getElementById("12").textContent = "桌面端"
+      document.getElementById("13").textContent = "技术支持"
+      document.getElementById("14").textContent = "入门指南"
+      document.getElementById("15").textContent = "钱包手册"
+      document.getElementById("16").textContent = "资源"
+      document.getElementById("17").textContent = "隐私协议"
+      document.getElementById("18").textContent = "用户协议"
+      document.getElementById("20").href = "index.html?lan=Chinese"
+      document.getElementById("tubiaolink").href = "index.html?lan=Chinese"
+
+      //let allButton = document.querySelector('.nr')
+      //allButton.innerHTML=""    
+      //let newIcon = document.createElement('div')   
+      //newIcon.innerHTML=`
+      //<div class="tubiao">
+      //  <img src="img/tuite.png" alt="">
+      //  <img src="img/GitHub.png" alt="">
+      //  <img src="img/3t.png" alt="">
+      //</div>
+      //<div class="fengexian">
+      //</div>
+      //<div class="wenzi">
+      //  <p style="color: #b3b3b3; margin-bottom: 20px;" id="21">产品</p>
+      //  <a href="https://shop.3tdao.io"><p>Quantum Wallet</p></a>
+      //</div>
+      //<div class="wenzi">
+      //  <p style="color: #b3b3b3; margin-bottom:20px;" id="22">产品</p>
+      //  <a href="index.html?lan=Chinese"><p id="23">桌面端</p></a>
+      //  <a id="abcd" style="cursor: pointer;"><p style="color: white;">web</p></a>
+      //</div>
+      //<div class="wenzi">
+      //  <p style="color: #b3b3b3; margin-bottom:20px;" id="24">技术支持</p>
+      //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet?#"><p id="25">入门指南</p></a>
+      //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet?#"><p id="26">钱包手册</p></a>
+      //</div>
+      //<div class="wenzi">
+      //  <p style="color: #b3b3b3; margin-bottom:20px;" id="27">Resources</p>
+      //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet/tty3qzry7ypxqqal?singleDoc#" id="28"><p>隐私协议</p></a>
+      //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet/mp7t3y8g0pacvm29?singleDoc#" id="29"><p>用户协议</p></a>
+      //</div>
+      //`
+      //allButton.appendChild(newIcon)      
+    }
+    const toChinese = document.querySelector('.Chinese')
+    toChinese.addEventListener('click', (event) => {
+      toC();
+      window.location.href = "zhichigonglian.html?lan=Chinese"
+      //webLink = document.querySelector('#abcd');
+      //webLink.addEventListener('click', (event) => {
+      //  document.getElementById("tip-box").style.display = 'block';
+      //  setTimeout(() => {
+      //    document.getElementById("tip-box").style.display = 'none';
+      //  }, 2000);
+      //});      
+    })
+
+    function toT() {
+      document.getElementById("1").textContent = "支持公鏈"
+      document.getElementById("2").textContent = "主頁"
+      document.getElementById("3").textContent = "支持公鏈"
+      document.getElementById("4").textContent = "幫助中心"
+      document.getElementById("5").textContent = "語言"
+      document.getElementById("7").placeholder = "請輸入妳想要的令牌"
+      document.getElementById("8").textContent = "代幣列錶"
+      document.getElementById("tip-box").textContent = "暫未上線，請敬請期待!"
+      document.getElementById("2").href = "index.html?lan=Tchinese"
+      document.getElementById("3").href = "zhichigonglian.html?lan=Tchinese"
+
+      document.getElementById("10").textContent = "產品"
+      document.getElementById("11").textContent = "產品"
+      document.getElementById("12").textContent = "桌面端"
+      document.getElementById("13").textContent = "技術支持"
+      document.getElementById("14").textContent = "入門指南"
+      document.getElementById("15").textContent = "錢包手冊"
+      document.getElementById("16").textContent = "資源"
+      document.getElementById("17").textContent = "隱私協議"
+      document.getElementById("18").textContent = "用戶協議"
+      document.getElementById("20").href = "index.html?lan=Tchinese"
+      document.getElementById("tubiaolink").href = "index.html?lan=Tchinese"
+
+      //let allButton = document.querySelector('.nr')
+      //allButton.innerHTML=""    
+      //let newIcon = document.createElement('div')   
+      //newIcon.innerHTML=`
+      //<div class="tubiao">
+      //  <img src="img/tuite.png" alt="">
+      //  <img src="img/GitHub.png" alt="">
+      //  <img src="img/3t.png" alt="">
+      //</div>
+      //<div class="fengexian">
+      //</div>
+      //<div class="wenzi">
+      //  <p style="color: #b3b3b3; margin-bottom: 20px;" id="21">產品</p>
+      //  <a href="https://shop.3tdao.io"><p>Quantum Wallet</p></a>
+      //</div>
+      //<div class="wenzi">
+      //  <p style="color: #b3b3b3; margin-bottom:20px;" id="22">產品</p>
+      //  <a href="index.html?lan=Tchinese"><p id="23">桌面端</p></a>
+      //  <a id="abcd" style="cursor: pointer;"><p style="color: white;">web</p></a>
+      //</div>
+      //<div class="wenzi">
+      //  <p style="color: #b3b3b3; margin-bottom:20px;" id="24">技術支持</p>
+      //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet?#"><p id="25">入門指南</p></a>
+      //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet?#"><p id="26">錢包手冊</p></a>
+      //</div>
+      //<div class="wenzi">
+      //  <p style="color: #b3b3b3; margin-bottom:20px;" id="27">資源</p>
+      //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet/tty3qzry7ypxqqal?singleDoc#" id="28"><p>隱私協議</p></a>
+      //  <a href="https://3tdao.yuque.com/org-wiki-3tdao-itwh7x/3qwallet/mp7t3y8g0pacvm29?singleDoc#" id="29"><p>用戶協議</p></a>
+      //</div>
+      //`
+      //allButton.appendChild(newIcon)      
+    }
+    const toTchinese = document.querySelector('.Tchinese')
+    toTchinese.addEventListener('click', (event) => {
+      toT();
+      window.location.href = "zhichigonglian.html?lan=Tchinese"
+      //webLink = document.querySelector('#abcd');
+      //webLink.addEventListener('click', (event) => {
+      //  document.getElementById("tip-box").style.display = 'block';
+      //  setTimeout(() => {
+      //    document.getElementById("tip-box").style.display = 'none';
+      //  }, 2000);
+      //});
+    })
+  </script>
+  
+</body>
+</html>
