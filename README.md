@@ -1,1 +1,2 @@
-# 3Q-Wallet
+# 3Q-Wallet  
+Home page and Support of chains
