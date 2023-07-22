@@ -1,4 +1,4 @@
 # 3Q-Wallet  
-Home page and Support of chains  
-  
-Top Business Inc
+Home page and Support of chains
+Language: Javascript HTML CSS   
+By Top Business Inc
